@@ -722,6 +722,19 @@ export default Component.extend({
    */
   columnsVisibilityChangedAction: null,
 
+/**
+   * Closure action sent on row click
+   *
+   * Usage
+   *
+   * ```hbs
+   * {{models-table data=model columns=columns rowClickAction=(action "someAction")}}
+   * ```
+   *
+   * @event rowClickAction
+   */
+  rowClickAction: null,
+
   /**
    * Closure action sent on row double-click
    *
@@ -2029,6 +2042,13 @@ export default Component.extend({
           get(this, 'selectedItems').pushObject(dataItem);
         }
       }
+
+      let action = get(this, 'rowClickAction');
+      let actionIsFunction = typeof action === 'function';
+      if (actionIsFunction) {
+        action(index, dataItem);
+      }
+
       this.userInteractionObserver();
     },
 
